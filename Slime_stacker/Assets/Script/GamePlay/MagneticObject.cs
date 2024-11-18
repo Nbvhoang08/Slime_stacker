@@ -12,23 +12,27 @@ public class MagneticObject : MonoBehaviour
     
     [Header("Object Properties")]
     public float objectMass = 1f;              // Khối lượng của object
-    private Rigidbody rb;                      // Rigidbody của object
-    private List<Rigidbody> attractedObjects;  // Danh sách các object đang bị hút
-    
+    public Rigidbody2D rb;                      // Rigidbody của object
+    private List<Rigidbody2D> attractedObjects;  // Danh sách các object đang bị hút
+    public bool isHolding;
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody2D>();
         rb.mass = objectMass;
-        attractedObjects = new List<Rigidbody>();
+        attractedObjects = new List<Rigidbody2D>();
     }
     
     private void FixedUpdate()
     {
+        if(!isHolding)
+        {
+            ApplyMagneticForces();
+        }
         // Tìm các object trong phạm vi từ trường
         DetectMagneticObjects();
         
         // Tính toán và áp dụng lực hút cho từng object
-        ApplyMagneticForces();
+        
         
         // Tính tổng hợp lực tác động lên object này
         CalculateTotalForces();
@@ -37,12 +41,12 @@ public class MagneticObject : MonoBehaviour
     private void DetectMagneticObjects()
     {
         // Tìm các collider trong phạm vi từ trường
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, magneticRadius, magneticLayer);
-        attractedObjects.Clear();
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, magneticRadius, magneticLayer);
+        attractedObjects = new List<Rigidbody2D>();
         
-        foreach (Collider collider in hitColliders)
+        foreach (Collider2D collider in hitColliders)
         {
-            Rigidbody targetRb = collider.GetComponent<Rigidbody>();
+            Rigidbody2D targetRb = collider.GetComponent<Rigidbody2D>();
             if (targetRb != null && targetRb != rb)
             {
                 attractedObjects.Add(targetRb);
@@ -52,10 +56,10 @@ public class MagneticObject : MonoBehaviour
     
     private void ApplyMagneticForces()
     {
-        foreach (Rigidbody targetRb in attractedObjects)
+        foreach (Rigidbody2D targetRb in attractedObjects)
         {
             // Tính vector hướng và khoảng cách
-            Vector3 direction = transform.position - targetRb.position;
+            Vector2 direction = (Vector2)transform.position - targetRb.position;
             float distance = direction.magnitude;
             
             if (distance == 0f) continue;
@@ -80,13 +84,13 @@ public class MagneticObject : MonoBehaviour
     private void CalculateTotalForces()
     {
         // Tính trọng lực
-        Vector3 gravity = Physics.gravity * rb.mass;
+        Vector2 gravity = Physics2D.gravity * rb.mass;
         
         // Tính tổng các lực từ trường
-        Vector3 totalMagneticForce = Vector3.zero;
-        foreach (Rigidbody targetRb in attractedObjects)
+        Vector2 totalMagneticForce = Vector2.zero;
+        foreach (Rigidbody2D targetRb in attractedObjects)
         {
-            Vector3 direction = transform.position - targetRb.position;
+            Vector2 direction = (Vector2)transform.position - targetRb.position;
             float distance = direction.magnitude;
             
             if (distance == 0f) continue;
@@ -96,11 +100,12 @@ public class MagneticObject : MonoBehaviour
         }
         
         // Tổng hợp lực cuối cùng
-        Vector3 totalForce = gravity + totalMagneticForce;
+        Vector2 totalForce = gravity + totalMagneticForce;
         
         // Debug để kiểm tra
         Debug.DrawRay(transform.position, totalForce.normalized * 2f, Color.red);
-        Debug.Log($"Total Force Magnitude: {totalForce.magnitude}");
+        
+        
     }
     
     private void OnDrawGizmosSelected()
