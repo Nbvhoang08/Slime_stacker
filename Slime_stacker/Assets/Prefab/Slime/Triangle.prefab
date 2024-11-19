@@ -11,12 +11,11 @@ GameObject:
   - component: {fileID: 6865556674567154859}
   - component: {fileID: 2867640015574474429}
   - component: {fileID: 4317381923117020524}
-  - component: {fileID: -3254587885505827664}
   - component: {fileID: 3929703650549948061}
   - component: {fileID: -7504006534124245037}
   m_Layer: 0
   m_Name: Triangle
-  m_TagString: Untagged
+  m_TagString: slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,62 +122,17 @@ EdgeCollider2D:
   m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0.09
   m_Points:
-  - {x: 0.5292808, y: -0.29814422}
-  - {x: 0.14093423, y: -0.2996736}
+  - {x: 0.33543003, y: -0.3002981}
+  - {x: 0.046162844, y: -0.2996736}
   - {x: -0.01117754, y: 0.26971203}
-  - {x: -0.15834594, y: -0.31932718}
-  - {x: -0.6060386, y: -0.33702463}
-  - {x: -0.0057621, y: 0.5207412}
-  - {x: 0.59839475, y: -0.30428597}
+  - {x: -0.078651905, y: -0.31071168}
+  - {x: -0.5134208, y: -0.31979346}
+  - {x: 0.0028533936, y: 0.3979691}
+  - {x: 0.48854613, y: -0.31290147}
   m_AdjacentStartPoint: {x: 0, y: 0}
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!61 &-3254587885505827664
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5318569272508078648}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.050522685, y: 0.02245453}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.2439024, y: 1}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.96322036, y: 0.7979093}
-  m_EdgeRadius: 0
 --- !u!50 &3929703650549948061
 Rigidbody2D:
   serializedVersion: 4
@@ -225,3 +179,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   objectMass: 0.5
+  rb: {fileID: 0}
+  isHolding: 0

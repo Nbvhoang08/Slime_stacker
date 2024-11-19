@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class QueueSystem : MonoBehaviour
 {
@@ -10,11 +11,12 @@ public class QueueSystem : MonoBehaviour
     [SerializeField] private Vector2 slotSize = new Vector2(1f, 1f);
     [SerializeField] private float moveSpeed = 5f; // Tốc độ di chuyển của object
     private const int MAX_SLOTS = 5;
+    [SerializeField] private GameManager gameManager;
     
-    [SerializeField]private List<QueueObject> objectQueue = new List<QueueObject>();
+    public List<QueueObject> objectQueue = new List<QueueObject>();
     [SerializeField]private List<GameObject> pendingObjects;
     [SerializeField]private GameObject selectedObject;
-    private bool isDragging = false;
+    public bool isDragging = false;
     private Vector3 dragOffset;
 
    private void Awake() 
@@ -32,8 +34,10 @@ public class QueueSystem : MonoBehaviour
             GameObject slot = new GameObject($"Slot_{i}");
             slot.transform.parent = transform;
             // Vị trí slot từ phải sang trái
-            slot.transform.localPosition = new Vector3((MAX_SLOTS  - i) * slotSize.x + (MAX_SLOTS-i), 0, 0);
+            slot.transform.localPosition =  new Vector3((MAX_SLOTS-3- i) * slotSize.x + (MAX_SLOTS - 1 - 0.5f*i), 0, 0);
             queueSlots[i] = slot.transform;
+
+            
         }
     }
 
@@ -108,6 +112,10 @@ public class QueueSystem : MonoBehaviour
             
             // Di chuyển object vào slot cuối (bên trái)
             UpdateQueuePositions();
+            if(!gameManager.slime.Contains(newObj))
+            {
+                gameManager.slime.Add(newObj);
+            }
         }
     }
 
@@ -138,7 +146,12 @@ public class QueueSystem : MonoBehaviour
                 }
                 
             }
-                queueObj.rb.gravityScale = 0;
+
+                if(queueObj.rb != null)
+                {
+                    queueObj.rb.gravityScale = 0;
+                }
+                
         }
     }
 
@@ -151,7 +164,6 @@ public class QueueSystem : MonoBehaviour
 
         if (hit.collider != null)
         {
-            Debug.Log("drag");
             // Kiểm tra xem object có phải là object trên cùng của list không
             QueueObject hitObject = objectQueue.Find(x => x.gameObject == hit.collider.gameObject);
             if (hitObject != null && objectQueue.IndexOf(hitObject) == objectQueue.Count - 1)
@@ -182,8 +194,12 @@ private void StartDragging(QueueObject queueObj)
     // Chỉ restore scale cho selected object
     selectedObject.transform.localScale = queueObj.originalScale;
     queueObj.gameObject.layer = LayerMask.NameToLayer("slime");
-    queueObj.magneticObject.enabled = true;
-    queueObj.magneticObject.isHolding = true;
+    if(queueObj.magneticObject != null)
+    {
+        queueObj.magneticObject.enabled = true;
+        queueObj.magneticObject.isHolding = true;
+    } 
+   
     // Remove object from queue
     objectQueue.Remove(queueObj);
     UpdateQueuePositions();
@@ -199,7 +215,6 @@ private void StopDragging()
     {
         queueObj.GetComponent<MagneticObject>().rb.gravityScale = 1;
         queueObj.GetComponent<MagneticObject>().isHolding = false;
-        Debug.Log("adda");
     }
 
     isDragging = false;
@@ -234,6 +249,10 @@ private void StopDragging()
             QueueObject queueObj = new QueueObject(newObj);
             // Thêm vào đầu list (vị trí bên trái)
             objectQueue.Insert(0, queueObj);
+            if(!gameManager.slime.Contains(newObj))
+            {
+                gameManager.slime.Add(newObj);
+            }
         }
     }
 
@@ -287,8 +306,15 @@ public class QueueObject
         gameObject = obj;
         originalScale = obj.transform.localScale;
         isMoving = false;
-        rb = obj.GetComponent<Rigidbody2D>();
-        magneticObject= obj.GetComponent<MagneticObject>();
+        if(obj.GetComponent<Rigidbody2D>() != null)
+        {
+            rb = obj.GetComponent<Rigidbody2D>();
+        }
+        if(obj.GetComponent<MagneticObject>() != null)
+        {
+            magneticObject= obj.GetComponent<MagneticObject>();
+        }
+       
     }
 }
 

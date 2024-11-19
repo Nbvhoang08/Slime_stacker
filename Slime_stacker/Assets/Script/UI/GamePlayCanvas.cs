@@ -40,15 +40,7 @@ public class GamePlayCanvas : UICanvas
             {
                 _gameManager = FindObjectOfType<GameManager>();
             }
-            if (_gameManager.hasWon)
-            {
-                //WinMess.SetActive(true);
-                
-            }
-            else
-            {
-                //WinMess.SetActive(false);
-            }
+           
             UpdateButtonImage();
         }
 
@@ -86,13 +78,14 @@ public class GamePlayCanvas : UICanvas
             UIManager.Instance.CloseAll();
             Time.timeScale = 1; 
             SceneManager.LoadScene("Home");
-            
+            SoundManager.Instance.PlayVFXSound(2);
             UIManager.Instance.OpenUI<HomeCanvas>();
             
         }
         public void SoundBtn()
         {
             SoundManager.Instance.TurnOn = !SoundManager.Instance.TurnOn;
+            SoundManager.Instance.PlayVFXSound(2);
             UpdateButtonImage();
            
         }

@@ -189,7 +189,7 @@ public class ChooseLevelCanvas : UICanvas
         {
             if (levelIndex >= 0 && levelIndex < levels.Count && levels[levelIndex].isUnlocked)
             {
-                //SoundManager.Instance.PlayPopUpSound();
+                SoundManager.Instance.PlayVFXSound(2);
                 StartCoroutine(LoadLevelSequence(levelIndex));
             }
         }

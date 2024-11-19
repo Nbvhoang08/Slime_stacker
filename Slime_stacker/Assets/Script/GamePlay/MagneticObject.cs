@@ -15,27 +15,31 @@ public class MagneticObject : MonoBehaviour
     public Rigidbody2D rb;                      // Rigidbody của object
     private List<Rigidbody2D> attractedObjects;  // Danh sách các object đang bị hút
     public bool isHolding;
+    public bool istouching;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.mass = objectMass;
         attractedObjects = new List<Rigidbody2D>();
     }
+    void Update()
+    {
+        
+    }
     
     private void FixedUpdate()
     {
         if(!isHolding)
         {
+            // Tính toán và áp dụng lực hút cho từng object
             ApplyMagneticForces();
+            CalculateTotalForces();
         }
-        // Tìm các object trong phạm vi từ trường
-        DetectMagneticObjects();
-        
-        // Tính toán và áp dụng lực hút cho từng object
-        
-        
-        // Tính tổng hợp lực tác động lên object này
-        CalculateTotalForces();
+            // Tìm các object trong phạm vi từ trường
+            DetectMagneticObjects();
+            // Tính tổng hợp lực tác động lên object này
+            
+            
     }
     
     private void DetectMagneticObjects()
@@ -58,26 +62,30 @@ public class MagneticObject : MonoBehaviour
     {
         foreach (Rigidbody2D targetRb in attractedObjects)
         {
-            // Tính vector hướng và khoảng cách
-            Vector2 direction = (Vector2)transform.position - targetRb.position;
-            float distance = direction.magnitude;
+            if(!targetRb.gameObject.GetComponent<MagneticObject>().isHolding)
+            {
+                // Tính vector hướng và khoảng cách
+                Vector2 direction = (Vector2)transform.position - targetRb.position;
+                float distance = direction.magnitude;
             
-            if (distance == 0f) continue;
+                if (distance == 0f) continue;
             
-            // Tính lực hút dựa trên định luật nghịch đảo bình phương
-            float forceMagnitude = (magneticStrength * rb.mass * targetRb.mass) / (distance * distance);
+                // Tính lực hút dựa trên định luật nghịch đảo bình phương
+                float forceMagnitude = (magneticStrength * rb.mass * targetRb.mass) / (distance * distance);
             
-            // Giới hạn lực tối thiểu
-            if (forceMagnitude < minimumForce) continue;
+                // Giới hạn lực tối thiểu
+                if (forceMagnitude < minimumForce) continue;
             
-            // Chuẩn hóa vector hướng
-            Vector3 force = direction.normalized * forceMagnitude;
+                // Chuẩn hóa vector hướng
+                Vector3 force = direction.normalized * forceMagnitude;
             
-            // Áp dụng lực lên object đích
-            targetRb.AddForce(force);
+                // Áp dụng lực lên object đích
+                targetRb.AddForce(force);
             
-            // Áp dụng lực phản tác dụng lên chính object này (Định luật 3 Newton)
-            rb.AddForce(-force);
+                // Áp dụng lực phản tác dụng lên chính object này (Định luật 3 Newton)
+                rb.AddForce(-force);
+            }
+            
         }
     }
     
@@ -106,6 +114,29 @@ public class MagneticObject : MonoBehaviour
         Debug.DrawRay(transform.position, totalForce.normalized * 2f, Color.red);
         
         
+    }
+
+   
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.CompareTag("slime"))
+        {
+            if(!istouching)
+            {
+                 SoundManager.Instance.PlayVFXSound(0);   
+                istouching= true;
+            }
+                
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D other)
+    {
+        if(other.gameObject.CompareTag("slime"))
+        {
+           istouching = false;
+                
+        }
     }
     
     private void OnDrawGizmosSelected()

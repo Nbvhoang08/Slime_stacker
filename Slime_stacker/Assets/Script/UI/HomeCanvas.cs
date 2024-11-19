@@ -28,7 +28,7 @@ public class HomeCanvas : UICanvas
     {
         SoundManager.Instance.TurnOn = !SoundManager.Instance.TurnOn;
         UpdateButtonImage();
-        SoundManager.Instance.PlayVFXSound(2);    
+        SoundManager.Instance.PlayVFXSound(2);
     }
 
     private void UpdateButtonImage()

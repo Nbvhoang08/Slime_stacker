@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4412707571511531103}
   m_Layer: 0
   m_Name: Circle
-  m_TagString: Untagged
+  m_TagString: slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -119,9 +119,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.053794682}
   serializedVersion: 2
-  m_Radius: 0.48
+  m_Radius: 0.42620534
 --- !u!50 &-5840565894913208654
 Rigidbody2D:
   serializedVersion: 4
@@ -168,3 +168,5 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   objectMass: 1
+  rb: {fileID: 0}
+  isHolding: 0
