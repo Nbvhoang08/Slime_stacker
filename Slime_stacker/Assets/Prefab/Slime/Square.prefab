@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   magneticStrength: 30
-  magneticRadius: 1
+  magneticRadius: 0.7
   minimumForce: 0.1
   magneticLayer:
     serializedVersion: 2
@@ -180,3 +180,4 @@ MonoBehaviour:
   objectMass: 1
   rb: {fileID: 0}
   isHolding: 0
+  istouching: 0

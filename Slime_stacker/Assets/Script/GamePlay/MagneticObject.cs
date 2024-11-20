@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class MagneticObject : MonoBehaviour
@@ -16,28 +17,33 @@ public class MagneticObject : MonoBehaviour
     private List<Rigidbody2D> attractedObjects;  // Danh sách các object đang bị hút
     public bool isHolding;
     public bool istouching;
+    private Collider2D colli;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.mass = objectMass;
         attractedObjects = new List<Rigidbody2D>();
+        colli = GetComponent<Collider2D>();
     }
     void Update()
     {
         
+        if (colli == null)
+        {
+            Debug.LogWarning("Collider đã bị xóa hoặc vô hiệu hóa!" + this.name);
+        }
     }
     
     private void FixedUpdate()
     {
-        if(!isHolding)
-        {
-            // Tính toán và áp dụng lực hút cho từng object
+      
+            // // Tính toán và áp dụng lực hút cho từng object
             ApplyMagneticForces();
-            CalculateTotalForces();
-        }
-            // Tìm các object trong phạm vi từ trường
+        
+            // // Tìm các object trong phạm vi từ trường
             DetectMagneticObjects();
-            // Tính tổng hợp lực tác động lên object này
+            // // Tính tổng hợp lực tác động lên object này
+            CalculateTotalForces();
             
             
     }
@@ -67,12 +73,14 @@ public class MagneticObject : MonoBehaviour
                 // Tính vector hướng và khoảng cách
                 Vector2 direction = (Vector2)transform.position - targetRb.position;
                 float distance = direction.magnitude;
+              
+
             
                 if (distance == 0f) continue;
             
                 // Tính lực hút dựa trên định luật nghịch đảo bình phương
-                float forceMagnitude = (magneticStrength * rb.mass * targetRb.mass) / (distance * distance);
-            
+                float forceMagnitude = (magneticStrength * rb.mass * targetRb.mass) /(distance*distance);
+                forceMagnitude = math.clamp(forceMagnitude, 0f,100f);
                 // Giới hạn lực tối thiểu
                 if (forceMagnitude < minimumForce) continue;
             
@@ -81,7 +89,7 @@ public class MagneticObject : MonoBehaviour
             
                 // Áp dụng lực lên object đích
                 targetRb.AddForce(force);
-            
+                
                 // Áp dụng lực phản tác dụng lên chính object này (Định luật 3 Newton)
                 rb.AddForce(-force);
             }
@@ -125,7 +133,9 @@ public class MagneticObject : MonoBehaviour
             {
                  SoundManager.Instance.PlayVFXSound(0);   
                 istouching= true;
+                 
             }
+            Debug.Log(other.gameObject.name + " " + this.name );
                 
         }
     }

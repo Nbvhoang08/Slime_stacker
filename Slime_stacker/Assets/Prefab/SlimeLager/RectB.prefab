@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 61130867785036228}
   - component: {fileID: -4006821341581588851}
   m_Layer: 0
-  m_Name: Rect
+  m_Name: RectB
   m_TagString: slime
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

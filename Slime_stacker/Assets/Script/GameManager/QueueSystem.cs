@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Rendering;
+
 
 public class QueueSystem : MonoBehaviour
 {
@@ -64,8 +64,8 @@ public class QueueSystem : MonoBehaviour
                     currentPos, 
                     queueObj.targetPosition, 
                     moveSpeed * Time.deltaTime
+                    
                 );
-
                 if (Vector3.Distance(queueObj.gameObject.transform.position, queueObj.targetPosition) < 0.01f)
                 {
                     queueObj.isMoving = false;

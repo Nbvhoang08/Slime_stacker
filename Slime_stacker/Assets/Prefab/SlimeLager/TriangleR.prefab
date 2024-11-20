@@ -172,13 +172,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f46b407cfdd6742569bba96b904c9a2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  magneticStrength: 10
-  magneticRadius: 2
+  magneticStrength: 20
+  magneticRadius: 1.56
   minimumForce: 0.1
   magneticLayer:
     serializedVersion: 2
     m_Bits: 64
-  objectMass: 0.5
+  objectMass: 1
   rb: {fileID: 0}
   isHolding: 0
   istouching: 0

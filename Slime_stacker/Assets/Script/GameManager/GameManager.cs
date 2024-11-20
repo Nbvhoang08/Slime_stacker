@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
         if (allObjectsVisible && !gameOver && !hasWon)
         {
             hasWon = true;
-            UIManager.Instance.OpenUI<WinCanvas>();
+            //UIManager.Instance.OpenUI<WinCanvas>();
             LevelManager.Instance.SaveGame();
             Time.timeScale = 0;
             Debug.Log("win");
@@ -105,8 +105,8 @@ public class GameManager : MonoBehaviour
     {
         if(!gameOver)
         {
-            UIManager.Instance.OpenUI<LoseCanvas>();
-            Debug.Log("lose");
+            //UIManager.Instance.OpenUI<LoseCanvas>();
+        
             gameOver = true;
         }else
         {

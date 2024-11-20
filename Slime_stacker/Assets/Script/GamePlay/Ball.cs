@@ -6,7 +6,7 @@ public class Ball : MonoBehaviour
 {
    [SerializeField] private GameManager gameManager;
    [SerializeField] private Animator anim;
-
+    
 
 
     void Update()
@@ -20,9 +20,9 @@ public class Ball : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("slime"))
+        if(other.CompareTag("slime") && gameManager.isCountingDown)
         {
-            Destroy(other);
+            Destroy(other.gameObject);
         }   
     }
 
